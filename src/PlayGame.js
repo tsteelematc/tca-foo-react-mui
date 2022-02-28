@@ -1,9 +1,15 @@
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 
-export const PlayGame = () => {
+export const PlayGame = ({addGameResult}) => {
 
     const nav = useNavigate();
+
+    const endGame = () => {
+
+        addGameResult({});
+        nav("/");
+    };
 
     return (
         <>
@@ -12,7 +18,7 @@ export const PlayGame = () => {
             </h2>
             <Button
                 variant='outlined'
-                onClick={() => nav("/")}
+                onClick={endGame}
             >
                 Done
             </Button>
