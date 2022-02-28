@@ -1,20 +1,20 @@
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 
-export const Home = () => {
+export const PlayGame = () => {
 
     const nav = useNavigate();
 
     return (
         <>
             <h2>
-                Home
+                Play Game
             </h2>
             <Button
                 variant='outlined'
-                onClick={() => nav("/setup")}
+                onClick={() => nav("/")}
             >
-                Play
+                Done
             </Button>
         </>
     );

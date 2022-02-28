@@ -2,9 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from './Home';
-
-const SetupGame = () => <h2>Setup Game</h2>;
-const PlayGame = () => <h2>Play Game</h2>;
+import { SetupGame } from './SetupGame';
+import { PlayGame } from './PlayGame';
 
 function App() {
   return (
