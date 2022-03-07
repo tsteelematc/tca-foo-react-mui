@@ -27,10 +27,18 @@ const gameResults = [
   , game2
 ];
 
+const getUniquePlayers = (results) => (
+  [... new Set(results.flatMap(x => x.players.map(y => y.name)))]
+);
+
 
 const App = () => {
 
   const [results, setResults] = useState(gameResults);
+  const [currentGame, setCurrentGame] = useState({
+    players: []
+    , start: ""
+  });
 
   const addGameResult = (gameResult) => {
     setResults(
@@ -51,10 +59,16 @@ const App = () => {
             gameResults={results}
           />
         } />
-        <Route path="setup" element={<SetupGame />} />
+        <Route path="setup" element={
+          <SetupGame 
+            uniquePreviousPlayers={getUniquePlayers(results)}
+            setCurrentGame={setCurrentGame}
+          />
+        } />
         <Route path="play" element={
           <PlayGame 
             addGameResult={addGameResult}
+            currentGame={currentGame}
           />
         } />
       </Routes>
