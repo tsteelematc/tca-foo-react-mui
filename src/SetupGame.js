@@ -1,5 +1,7 @@
+import { Checkbox, FormControlLabel, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export const SetupGame = ({
     uniquePreviousPlayers
@@ -12,16 +14,39 @@ export const SetupGame = ({
         
         // Set data for the current game...
         setCurrentGame({
-            players: [
-                uniquePreviousPlayers[0]
-                , uniquePreviousPlayers[1]
-                , "Suzzie"
-            ]
+            players: choosePlayers.filter(x => x.checked).map(x => x.name)
             , start: (new Date()).toISOString()
         });
 
         // Nav to the play game screen.
         nav("/play");
+    };
+
+    const playersWithCheckedState = uniquePreviousPlayers.map(x => ({
+        name: x
+        , checked: false
+    }));
+
+    const [choosePlayers, setChoosePlayers] = useState(playersWithCheckedState);
+
+    const togglePlayerCheck = (p) => {
+        setChoosePlayers(choosePlayers.map(x => ({
+            ...x
+            , checked: x === p ? !x.checked : x.checked
+        })));
+    };
+
+    const [newPlayerName, setNewPlayerName] = useState("");
+
+    const addNewPlayer = () => {
+        setChoosePlayers([
+            ...choosePlayers
+            , {
+                name: newPlayerName
+                , checked: true
+            }
+        ]);
+        setNewPlayerName("");
     };
 
     console.log(uniquePreviousPlayers);
@@ -34,8 +59,34 @@ export const SetupGame = ({
             <h3>
                 Choose Players
             </h3>
+            <div>
+                <TextField 
+                    variant="outlined"
+                    label="Enter new player name"
+                    value={newPlayerName}
+                    onChange={(e) => setNewPlayerName(e.target.value)}
+                />
+                <Button
+                    onClick={addNewPlayer}
+                >
+                    Add
+                </Button>
+            </div>
             {
-                uniquePreviousPlayers.map(x => <p key={x}>{x}</p>)
+                choosePlayers.map(x => (
+                    <p>
+                        <FormControlLabel
+                            key={x.name}
+                            label={x.name}
+                            control={(
+                                <Checkbox 
+                                    checked={x.checked}
+                                    onChange={() => togglePlayerCheck(x)}
+                                />
+                            )}
+                        />
+                    </p>                        
+                ))
             }
 
             <Button
