@@ -28,11 +28,18 @@ export const PlayGame = ({
             <h2>
                 Play Game
             </h2>
+            { currentGame.players.map(x => (
+                <Button
+                    variant='outlined'
+                >
+                    {`${x} Won`}
+                </Button>
+            ))}
             <Button
                 variant='outlined'
                 onClick={endGame}
             >
-                Done
+                Quit
             </Button>
         </>
     );
