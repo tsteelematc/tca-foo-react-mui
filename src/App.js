@@ -60,6 +60,7 @@ const App = () => {
         <Route path="/" element={
           <Home 
             gameResults={results}
+            uniquePreviousPlayers={getUniquePlayers(results)}
           />
         } />
         <Route path="setup" element={
