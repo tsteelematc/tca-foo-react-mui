@@ -8,7 +8,7 @@ export const PlayGame = ({
 
     const nav = useNavigate();
 
-    const endGame = () => {
+    const endGame = (winner) => {
 
         addGameResult({
             start: currentGame.start
@@ -17,10 +17,10 @@ export const PlayGame = ({
                 , order: 0
             }))
             , end: (new Date()).toISOString()
-            , winner: "Suzzie"
+            , winner: winner
         });
 
-        nav("/");
+        nav(-2);
     };
 
     return (
@@ -31,13 +31,14 @@ export const PlayGame = ({
             { currentGame.players.map(x => (
                 <Button
                     variant='outlined'
+                    onClick={() => endGame(x)}
                 >
                     {`${x} Won`}
                 </Button>
             ))}
             <Button
                 variant='outlined'
-                onClick={endGame}
+                onClick={() => nav(-2)}
             >
                 Quit
             </Button>

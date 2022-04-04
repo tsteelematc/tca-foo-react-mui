@@ -48,7 +48,10 @@ const App = () => {
       ]
     );
   
-    console.log(gameResults);
+    console.log([
+      ...results 
+      , gameResult
+    ]);
   };
   
   return (
