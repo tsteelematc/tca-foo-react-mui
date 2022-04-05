@@ -1,6 +1,10 @@
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 const calculateShortestGame = (results) => (
     Math.min(
@@ -10,18 +14,21 @@ const calculateShortestGame = (results) => (
 
 const calculateLeaderboard = (uniquePlayers, results) => {
 
-    return uniquePlayers.map(x => {
+    return uniquePlayers
+        .map(x => {
 
-        const userGamesPlayed = results.filter(y => y.players.some(z => z.name === x));
-        const userGamesWon = userGamesPlayed.filter(y => y.winner === x);
+            const userGamesPlayed = results.filter(y => y.players.some(z => z.name === x));
+            const userGamesWon = userGamesPlayed.filter(y => y.winner === x);
 
-        return {
-            name: x
-            , wins: userGamesWon.length
-            , losses: userGamesPlayed.length - userGamesWon.length
-            , winningPercent: (userGamesWon.length / userGamesPlayed.length).toFixed(3)
-        };
-    });
+            return {
+                name: x
+                , wins: userGamesWon.length
+                , losses: userGamesPlayed.length - userGamesWon.length
+                , winningPercent: (userGamesWon.length / userGamesPlayed.length).toFixed(3)
+            };
+        })
+        .sort((a, b) => `${b.winningPercent}${(b.wins + b.losses).toString().padStart(3, '0')}`.localeCompare(`${a.winningPercent}${(a.wins + a.losses).toString().padStart(3, '0')}`))
+    ;
 
 };
 
@@ -32,14 +39,7 @@ export const Home = ({
 
     const nav = useNavigate();
 
-    useEffect(
-        () => {
-            const lb = calculateLeaderboard(uniquePreviousPlayers, gameResults);
-            console.log(lb);
-        }
-        , [uniquePreviousPlayers, gameResults]
-    );
-
+    const lb = calculateLeaderboard(uniquePreviousPlayers, gameResults);
 
     return (
         <>
@@ -52,6 +52,29 @@ export const Home = ({
             <h3>
                 Shortest game (minutes): {calculateShortestGame(gameResults) / 1000 / 60}
             </h3>
+
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell align="right">W</TableCell>
+                        <TableCell align="right">L</TableCell>
+                        <TableCell align="right">AVG</TableCell>
+                        <TableCell></TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {lb.map((row) => (
+                        <TableRow
+                            key={row.name}
+                        >
+                            <TableCell align="right">{row.wins}</TableCell>
+                            <TableCell align="right">{row.losses}</TableCell>
+                            <TableCell align="right">{row.winningPercent}</TableCell>
+                            <TableCell align="left">{row.name}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
             <Button
                 variant='outlined'
                 onClick={() => nav("/setup")}
