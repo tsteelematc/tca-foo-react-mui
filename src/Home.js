@@ -5,6 +5,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import prettyMs from 'pretty-ms';
 
 const calculateShortestGame = (results) => (
     Math.min(
@@ -50,7 +51,7 @@ export const Home = ({
                 Total games played: {gameResults.length}
             </h3>
             <h3>
-                Shortest game (minutes): {calculateShortestGame(gameResults) / 1000 / 60}
+                Shortest game: {prettyMs(calculateShortestGame(gameResults))}
             </h3>
 
             <Table>
