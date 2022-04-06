@@ -42,6 +42,8 @@ export const Home = ({
 
     const lb = calculateLeaderboard(uniquePreviousPlayers, gameResults);
 
+    const shortestGame = calculateShortestGame(gameResults);
+
     return (
         <>
             <h2>
@@ -51,7 +53,7 @@ export const Home = ({
                 Total games played: {gameResults.length}
             </h3>
             <h3>
-                Shortest game: {prettyMs(calculateShortestGame(gameResults))}
+                Shortest game: {prettyMs(10000)}
             </h3>
 
             <Table>
