@@ -76,8 +76,9 @@ const App = () => {
   });
 
   const loadGameResults = async () => {
-    //setResults(await localforage.getItem("gameResults") ?? []);
-    setResults(await loadGamesFromCloud(email) ?? []);
+    const e = await localforage.getItem("email") ?? "";
+    setEmail(e);
+    setResults(await loadGamesFromCloud(e) ?? []);
   };
 
   const loadEmail = async () => {
@@ -94,11 +95,10 @@ const App = () => {
   };
 
   useEffect(
-    async () => {
-      await loadEmail();
-      await loadGameResults();
+    () => {
+      loadGameResults();
     } 
-    , [email]
+    , []
   );
 
   const addGameResult = async (gameResult) => {
