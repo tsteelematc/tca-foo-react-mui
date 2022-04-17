@@ -15,6 +15,8 @@ const App = () => {
 
   // Two items of "lifted state," game results and current game info.
   const [results, setResults] = useState([]);
+  
+  const [email, setEmail] = useState("");
 
   const [currentGame, setCurrentGame] = useState({
     players: []
@@ -25,9 +27,23 @@ const App = () => {
     setResults(await localforage.getItem("gameResults") ?? []);
   };
 
+  const loadEmail = async () => {
+    setEmail(await localforage.getItem("email") ?? "");
+  };
+
+  const saveEmail = async (e) => {
+
+    // Save it to local storage.
+    await localforage.setItem("email", e);
+
+    // Reread from local storage into state.
+    loadEmail();
+  };
+
   useEffect(
     () => {
       loadGameResults();
+      loadEmail();
     } 
     , []
   );
@@ -56,6 +72,8 @@ const App = () => {
           <Home 
             gameResults={results}
             uniquePreviousPlayers={getUniquePlayers(results)}
+            email={email}
+            saveEmail={saveEmail}
           />
         } />
         <Route path="setup" element={

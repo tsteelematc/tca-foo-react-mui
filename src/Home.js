@@ -6,6 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import prettyMs from 'pretty-ms';
+import { TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 const calculateShortestGame = (results) => (
     Math.min(
@@ -36,9 +38,19 @@ const calculateLeaderboard = (uniquePlayers, results) => {
 export const Home = ({
     gameResults
     , uniquePreviousPlayers
+    , email
+    , saveEmail
 }) => {
 
     const nav = useNavigate();
+    const [editedEmail, setEditedEmail] = useState("");
+
+    useEffect(
+        () => {
+            setEditedEmail(email)
+        }
+        , [email]
+    );
 
     const lb = calculateLeaderboard(uniquePreviousPlayers, gameResults);
 
@@ -49,41 +61,67 @@ export const Home = ({
             <h2>
                 Home
             </h2>
-            <h3>
-                Total games played: {gameResults.length}
-            </h3>
-            <h3>
-                Shortest game: {prettyMs(10000)}
-            </h3>
+            {
+                email.length > 0 ?
+                <>
+                    <h3>
+                        Total games played: {gameResults.length}
+                    </h3>
+                    <h3>
+                        Shortest game: {prettyMs(10000)}
+                    </h3>
 
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell align="right">W</TableCell>
-                        <TableCell align="right">L</TableCell>
-                        <TableCell align="right">AVG</TableCell>
-                        <TableCell></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {lb.map((row) => (
-                        <TableRow
-                            key={row.name}
-                        >
-                            <TableCell align="right">{row.wins}</TableCell>
-                            <TableCell align="right">{row.losses}</TableCell>
-                            <TableCell align="right">{row.winningPercent}</TableCell>
-                            <TableCell align="left">{row.name}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-            <Button
-                variant='outlined'
-                onClick={() => nav("/setup")}
-            >
-                Play
-            </Button>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell align="right">W</TableCell>
+                                <TableCell align="right">L</TableCell>
+                                <TableCell align="right">AVG</TableCell>
+                                <TableCell></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {lb.map((row) => (
+                                <TableRow
+                                    key={row.name}
+                                >
+                                    <TableCell align="right">{row.wins}</TableCell>
+                                    <TableCell align="right">{row.losses}</TableCell>
+                                    <TableCell align="right">{row.winningPercent}</TableCell>
+                                    <TableCell align="left">{row.name}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                    <Button
+                        variant='outlined'
+                        onClick={() => nav("/setup")}
+                    >
+                        Play
+                    </Button>
+                    <Button
+                        onClick={() => saveEmail("")}
+                    >
+                        Change Email
+                    </Button>
+               </> :
+               <>
+                    <h3>
+                        Enter your email to save your games in the cloud...
+                    </h3>
+                    <TextField
+                        value={editedEmail}
+                        onChange={(e) => setEditedEmail(e.target.value)}
+                    >
+                    </TextField>
+                    <Button
+                        variant="outlined"
+                        onClick={() => editedEmail.length > 0 && saveEmail(editedEmail)}
+                    >
+                        Save
+                    </Button>
+               </>
+            }
         </>
     );
 };
