@@ -52,6 +52,17 @@ const saveGameToCloud = async (email, gameResult) => {
   );
 };
 
+const loadGamesFromCloud = async (email) => {
+  const url = `https://32wop75hhc.execute-api.us-east-1.amazonaws.com/prod/data/?user=${email}&game=tca-foo-react-mui`;
+  console.log("url", url);
+  const response = await fetch(url);
+  const data = await response.json();
+  console.log("data", data);
+  const unmarshalledData = data.Items.map(x => unmarshall(x, {convertEmptyValues: true}));
+  const gameResults = unmarshalledData.map(x => x.game);
+  return gameResults;    
+};
+
 const App = () => {
 
   // Two items of "lifted state," game results and current game info.
@@ -65,7 +76,8 @@ const App = () => {
   });
 
   const loadGameResults = async () => {
-    setResults(await localforage.getItem("gameResults") ?? []);
+    //setResults(await localforage.getItem("gameResults") ?? []);
+    setResults(await loadGamesFromCloud(email) ?? []);
   };
 
   const loadEmail = async () => {
