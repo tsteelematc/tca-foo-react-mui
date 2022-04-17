@@ -68,7 +68,7 @@ const App = () => {
   // Two items of "lifted state," game results and current game info.
   const [results, setResults] = useState([]);
   
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(() => "");
 
   const [currentGame, setCurrentGame] = useState({
     players: []
@@ -94,11 +94,11 @@ const App = () => {
   };
 
   useEffect(
-    () => {
-      loadGameResults();
-      loadEmail();
+    async () => {
+      await loadEmail();
+      await loadGameResults();
     } 
-    , []
+    , [email]
   );
 
   const addGameResult = async (gameResult) => {

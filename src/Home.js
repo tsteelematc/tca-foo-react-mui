@@ -10,9 +10,11 @@ import { TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 const calculateShortestGame = (results) => (
-    Math.min(
-        ...results.map(x => Date.parse(x.end) - Date.parse(x.start))
-    )
+    results.length 
+        ? Math.min(
+            ...results.map(x => Date.parse(x.end) - Date.parse(x.start))
+        )
+        : 0
 );
 
 const calculateLeaderboard = (uniquePlayers, results) => {
@@ -68,7 +70,7 @@ export const Home = ({
                         Total games played: {gameResults.length}
                     </h3>
                     <h3>
-                        Shortest game: {prettyMs(10000)}
+                        Shortest game: {prettyMs(shortestGame)}
                     </h3>
 
                     <Table>
