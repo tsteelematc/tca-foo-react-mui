@@ -6,10 +6,51 @@ import { SetupGame } from './SetupGame';
 import { PlayGame } from './PlayGame';
 import { useState, useEffect } from 'react';
 import localforage from 'localforage';
+import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 
 const getUniquePlayers = (results) => (
   [... new Set(results.flatMap(x => x.players.map(y => y.name)))]
 );
+
+const saveGameToCloud = async (email, gameResult) => {
+
+  const dynamoGame = {
+    pk: email
+    , sk: `tca-foo-react-mui#${gameResult.end}`
+
+    , ts: gameResult.end
+    , user: email
+    , app: 'tca-foo-react-mui'
+
+    , gsi1pk: 'tca-foo-react-mui'
+    , gsi1sk: gameResult.end
+
+    , game: gameResult
+  };
+
+  const marshalledGame = marshall(
+    dynamoGame
+    , {
+      removeUndefinedValues: true
+      , convertClassInstanceToMap: true
+    }
+  );
+
+  console.log(marshalledGame);
+
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({
+      TableName: "tca-data",
+      Item: marshalledGame
+    })  
+  };
+
+  await fetch(
+    "https://32wop75hhc.execute-api.us-east-1.amazonaws.com/prod/data"
+    , options 
+  );
+};
 
 const App = () => {
 
@@ -49,6 +90,8 @@ const App = () => {
   );
 
   const addGameResult = async (gameResult) => {
+
+    await saveGameToCloud(email, gameResult);
 
     const newResults = [
       ...results
