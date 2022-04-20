@@ -6,7 +6,7 @@ import { SetupGame } from './SetupGame';
 import { PlayGame } from './PlayGame';
 import { useState, useEffect } from 'react';
 import localforage from 'localforage';
-import { saveGameToCloud } from './TcaCloudApi';
+import { saveGameToCloud, loadGamesFromCloud } from './TcaCloudApi';
 
 const getUniquePlayers = (results) => (
   [... new Set(results.flatMap(x => x.players.map(y => y.name)))]
@@ -23,7 +23,13 @@ const App = () => {
   });
 
   const loadGameResults = async () => {
-    setResults(await localforage.getItem("gameResults") ?? []);
+    // setResults(await localforage.getItem("gameResults") ?? []);
+    setResults(
+      await loadGamesFromCloud(
+        "tsteele@madisoncollege.edu"
+        , "tca-foo-react-mui"
+      ) ?? []
+    );
   };
 
   useEffect(
