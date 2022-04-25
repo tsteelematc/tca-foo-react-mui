@@ -38,6 +38,7 @@ export const Home = ({
     gameResults
     , uniquePreviousPlayers
     , emailAddress
+    , updateEmailAddress
 }) => {
 
     const nav = useNavigate();
@@ -55,6 +56,9 @@ export const Home = ({
             {
                 emailAddress.length > 0 ?
                     <>
+                        <h3>
+                            {emailAddress}
+                        </h3>
                         <h3>
                             Total games played: {gameResults.length}
                         </h3>
@@ -97,7 +101,9 @@ export const Home = ({
                         <TextField
                             placeholder="Enter your email address"
                         ></TextField>
-                        <Button>
+                        <Button
+                            onClick={() => updateEmailAddress("foo@bar.com")}
+                        >
                             Save
                         </Button>
                     </>
