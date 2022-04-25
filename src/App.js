@@ -31,19 +31,12 @@ const App = () => {
 
   const loadGameResults = async () => {
 
-    //
-    // Three things...
-    //
-
-    // Thing 1 - load the email address from local storage
-    const emailReadFromLocalStorage = await localforage.getItem("email") ?? "";
-
-    // Thing 2 - update the email lifted state
-    setEmailAddress(emailReadFromLocalStorage);
+    // Update the lifted state...
+    setEmailAddress(await localforage.getItem("email") ?? "");
     
-    // Thing 3 - load the game results from the cloud for the email address
-    if (emailReadFromLocalStorage.length > 0) {
-      setResults(await loadGamesFromCloud(emailReadFromLocalStorage, "tca-foo-react-mui") ?? []);
+    // Load the game results from the cloud if we have an email address.
+    if (emailAddress.length > 0) {
+      setResults(await loadGamesFromCloud(emailAddress, "tca-foo-react-mui") ?? []);
     }
   };
 
