@@ -24,6 +24,11 @@ const App = () => {
 
   const [emailAddress, setEmailAddress] = useState("");
 
+  const updateEmailAddress = async (newEmailAddress) => {
+    // Update the state after storing locally.
+    setEmailAddress(await localforage.setItem("email", newEmailAddress));
+  };
+
   const loadGameResults = async () => {
     // setResults(await localforage.getItem("gameResults") ?? []);
     setResults(await loadGamesFromCloud("tsteele@madisoncollege.edu", "tca-foo-react-mui") ?? []);
@@ -67,6 +72,7 @@ const App = () => {
             gameResults={results}
             uniquePreviousPlayers={getUniquePlayers(results)}
             emailAddress={emailAddress}
+            updateEmailAddress={updateEmailAddress}
           />
         } />
         <Route path="setup" element={

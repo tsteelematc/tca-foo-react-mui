@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import prettyMs from 'pretty-ms';
 import TextField from '@mui/material/TextField';
+import { useState } from 'react';
 
 const calculateShortestGame = (results) => (
     Math.min(
@@ -38,9 +39,13 @@ export const Home = ({
     gameResults
     , uniquePreviousPlayers
     , emailAddress
+    , updateEmailAddress
 }) => {
 
     const nav = useNavigate();
+
+    // Local, Home component, state, just to handle the TextField ! ! !
+    const [emailForEditing, setEmailForEditing] = useState(emailAddress);
 
     const lb = calculateLeaderboard(uniquePreviousPlayers, gameResults);
 
@@ -54,6 +59,14 @@ export const Home = ({
             {
                 emailAddress.length > 0 ?
                 <>
+                    <h3>
+                        {emailAddress}
+                        <Button
+                            onClick={() => updateEmailAddress("")}
+                        >
+                            Reset
+                        </Button>
+                    </h3>
                     <h3>
                         Total games played: {gameResults.length}
                     </h3>
@@ -94,8 +107,12 @@ export const Home = ({
                 <>
                     <TextField 
                         placeholder="Enter email address"
+                        value={emailForEditing}
+                        onChange={(e) => setEmailForEditing(e.target.value)}
                     />
-                    <Button>
+                    <Button
+                        onClick={() => updateEmailAddress(emailForEditing)}
+                    >
                         Save
                     </Button>
                 </>
