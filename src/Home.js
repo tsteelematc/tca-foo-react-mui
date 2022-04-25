@@ -6,6 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import prettyMs from 'pretty-ms';
+import TextField from '@mui/material/TextField';
 
 const calculateShortestGame = (results) => (
     Math.min(
@@ -36,6 +37,7 @@ const calculateLeaderboard = (uniquePlayers, results) => {
 export const Home = ({
     gameResults
     , uniquePreviousPlayers
+    , emailAddress
 }) => {
 
     const nav = useNavigate();
@@ -49,41 +51,57 @@ export const Home = ({
             <h2>
                 Home
             </h2>
-            <h3>
-                Total games played: {gameResults.length}
-            </h3>
-            <h3>
-                Shortest game: {prettyMs(10000)}
-            </h3>
 
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell align="right">W</TableCell>
-                        <TableCell align="right">L</TableCell>
-                        <TableCell align="right">AVG</TableCell>
-                        <TableCell></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {lb.map((row) => (
-                        <TableRow
-                            key={row.name}
+            {
+                emailAddress.length > 0 ?
+                    <>
+                        <h3>
+                            Total games played: {gameResults.length}
+                        </h3>
+                        <h3>
+                            Shortest game: {prettyMs(10000)}
+                        </h3>
+
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="right">W</TableCell>
+                                    <TableCell align="right">L</TableCell>
+                                    <TableCell align="right">AVG</TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {lb.map((row) => (
+                                    <TableRow
+                                        key={row.name}
+                                    >
+                                        <TableCell align="right">{row.wins}</TableCell>
+                                        <TableCell align="right">{row.losses}</TableCell>
+                                        <TableCell align="right">{row.winningPercent}</TableCell>
+                                        <TableCell align="left">{row.name}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                        <Button
+                            variant='outlined'
+                            onClick={() => nav("/setup")}
                         >
-                            <TableCell align="right">{row.wins}</TableCell>
-                            <TableCell align="right">{row.losses}</TableCell>
-                            <TableCell align="right">{row.winningPercent}</TableCell>
-                            <TableCell align="left">{row.name}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-            <Button
-                variant='outlined'
-                onClick={() => nav("/setup")}
-            >
-                Play
-            </Button>
+                            Play
+                        </Button>
+
+                    </>
+                    :
+                    <>
+                        <TextField
+                            placeholder="Enter your email address"
+                        ></TextField>
+                        <Button>
+                            Save
+                        </Button>
+                    </>
+            }
         </>
     );
 };
