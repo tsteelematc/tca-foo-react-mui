@@ -61,6 +61,11 @@ export const Home = ({
                     <>
                         <h3>
                             {emailAddress}
+                            <Button
+                                onClick={() => updateEmailAddress("")}
+                            >
+                                Reset
+                            </Button>
                         </h3>
                         <h3>
                             Total games played: {gameResults.length}

@@ -32,15 +32,21 @@ const App = () => {
   };
 
   const loadGameResults = async () => {
-    // setResults(await localforage.getItem("gameResults") ?? []);
-    setResults(await loadGamesFromCloud("tsteele@madisoncollege.edu", "tca-foo-react-mui") ?? []);
+
+    // Update the emailAddress state, after loading the email from local storage.
+    setEmailAddress(await localforage.getItem("email") ?? "");
+
+    // Then, if we have an email, load the game results.
+    if (emailAddress.length > 0) {
+      setResults(await loadGamesFromCloud(emailAddress, "tca-foo-react-mui") ?? []);
+    }
   };
 
   useEffect(
     () => {
       loadGameResults();
     } 
-    , []
+    , [emailAddress]
   );
 
   const addGameResult = async (gameResult) => {
@@ -54,7 +60,7 @@ const App = () => {
   
     // await localforage.setItem("gameResults", newResults);
     await saveGameToCloud(
-      "tsteele@madisoncollege.edu"
+      emailAddress
       , "tca-foo-react-mui"
       , gameResult.end          // new Date().toISOString()
       , gameResult
