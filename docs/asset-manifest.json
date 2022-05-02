@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/tca-foo-react-mui/static/css/main.073c9b0a.css",
+    "main.js": "/tca-foo-react-mui/static/js/main.5e698b4f.js",
+    "static/js/787.a61ac322.chunk.js": "/tca-foo-react-mui/static/js/787.a61ac322.chunk.js",
+    "static/media/logo.svg": "/tca-foo-react-mui/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/tca-foo-react-mui/index.html",
+    "main.073c9b0a.css.map": "/tca-foo-react-mui/static/css/main.073c9b0a.css.map",
+    "main.5e698b4f.js.map": "/tca-foo-react-mui/static/js/main.5e698b4f.js.map",
+    "787.a61ac322.chunk.js.map": "/tca-foo-react-mui/static/js/787.a61ac322.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.5e698b4f.js"
+  ]
+}
